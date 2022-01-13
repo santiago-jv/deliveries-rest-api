@@ -31,8 +31,11 @@ const DeliverySchema: Schema = new Schema({
     receiver:{
         type:Schema.Types.ObjectId,
         ref:'Receiver'
+    },
+    createdBy:{
+        ref:'Admin',
+        type:Schema.Types.ObjectId
     }
-    
 },{timestamps:true})
 
 DeliverySchema.set('toJSON', {

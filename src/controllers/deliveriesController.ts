@@ -6,6 +6,7 @@ import Receiver from "../models/Receiver";
 
 export async function getDeliveries (request:Request,response:Response) {
     const {limit = 10, offset = 0} = request.query;
+    console.log(request.headers.admin);
     try {
         const deliveries = await Delivery.find().skip(Number(offset)).limit(Number(limit)).populate('petitioner receiver');
         return response.status(200).json(deliveries)
