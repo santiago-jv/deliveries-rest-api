@@ -6,6 +6,6 @@ import messengerRouter from "./messengerRouter";
 const indexRouter: Router = Router();
 indexRouter.use('/auth', authRouter)
 indexRouter.use('/deliveries', deliveriesRouter);
-indexRouter.use('/messenger', messengerRouter);
+indexRouter.use('/messengers', messengerRouter);
 
 export default indexRouter;

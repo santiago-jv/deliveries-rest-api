@@ -1,21 +1,19 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import Delivery from "../models/Delivery";
 import Messenger from "../models/Messenger";
 import Petitioner from "../models/Petitioner";
 import Receiver from "../models/Receiver";
 
-export async function getDeliveries (request:Request,response:Response, next: NextFunction) {
+export async function getDeliveries (request:Request,response:Response) {
     const {limit = 10, offset = 0} = request.query;
-
-
     try {
-        const deliveries = await Delivery.find().skip(Number(offset)).limit(Number(limit)).populate('messenger petitioner receiver');
+        const deliveries = await Delivery.find().skip(Number(offset)).limit(Number(limit)).populate('petitioner receiver');
         return response.status(200).json(deliveries)
     } catch (error) {
         return response.status(400).json({error})
     }
 }
-export async function getDelivery (request:Request,response:Response, next: NextFunction) {
+export async function getDelivery (request:Request,response:Response) {
     const {id} = request.params
 
     try {
@@ -25,7 +23,7 @@ export async function getDelivery (request:Request,response:Response, next: Next
         return response.status(400).json({error})
     }
 }
-export async function createDelivery (request:Request,response:Response, next: NextFunction) {
+export async function createDelivery (request:Request,response:Response) {
     const { description, pickUpTime, deliveryTime,petitioner, receiver} = request.body;  
     const delivery = { description, pickUpTime, deliveryTime}  
     const {messenger:messengerId} = request.query;
@@ -60,7 +58,7 @@ export async function createDelivery (request:Request,response:Response, next: N
 
 
 }
-export async function updateDelivery(request:Request,response:Response,next:NextFunction) {
+export async function updateDelivery(request:Request,response:Response) {
     const { petitioner: petitionerData, receiver: receiverData,id, isComplete,description, pickUpTime,deliveryTime} = request.body
     
 
@@ -91,7 +89,7 @@ export async function updateDelivery(request:Request,response:Response,next:Next
         return response.status(500).json({error})
     }
 }
-export async function deleteDelivery(request:Request,response:Response,next:NextFunction) {
+export async function deleteDelivery(request:Request,response:Response) {
     const {id} = request.params
     try {
         const delivery = await Delivery.findById(id)

@@ -3,6 +3,7 @@ import cors from "cors"
 import { config } from "dotenv";
 import "./database/connection";
 import indexRouter from "./routes/indexRouter";
+
 config()
 
 const app: Application = express();
@@ -11,7 +12,7 @@ app.set('PORT', process.env.PORT || 8000)
 app.use(cors())
 app.use(express.json())
 
-//routes
+
 app.use('/api', indexRouter);
 
 app.listen(app.get('PORT'),()=>{
