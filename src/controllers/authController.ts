@@ -1,11 +1,10 @@
 import bcrypt from 'bcrypt'
 import { NextFunction, Request, Response } from "express";
-import { AdminDTO } from "../interfaces/admin.dto";
 import Admin from "../models/Admin";
 import jwt from "jsonwebtoken"
 
 export async function loginAdmin (request:Request,response:Response, next: NextFunction) {
-    const {email,password}:AdminDTO = request.body
+    const {email,password} = request.body
 
     try {
         const admin = await Admin.findOne({email});
@@ -37,7 +36,7 @@ export async function loginAdmin (request:Request,response:Response, next: NextF
 }
 
 export async function registerAdmin (request:Request,response:Response, next: NextFunction) {
-    const {name,email,password}:AdminDTO = request.body
+    const {name,email,password} = request.body
 
     try {
         const admin = await Admin.findOne({email});
