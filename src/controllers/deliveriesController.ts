@@ -26,7 +26,8 @@ export async function getDelivery (request:Request,response:Response) {
 }
 export async function createDelivery (request:Request,response:Response) {
     const { description, pickUpTime, deliveryTime,petitioner, receiver} = request.body;  
-    const delivery = { description, pickUpTime, deliveryTime}  
+    const createdBy = request.headers.admin
+    const delivery = { description, pickUpTime, deliveryTime,createdBy}  
     const {messenger:messengerId} = request.query;
 
     try {
@@ -34,8 +35,8 @@ export async function createDelivery (request:Request,response:Response) {
         if(!messenger) return response.status(400).json({
             message:"Messenger not found"
         })
-        const newPetitioner = await Petitioner.create(petitioner);
-        const newReceiver = await Receiver.create(receiver);
+        const newPetitioner = await Petitioner.create({...petitioner,createdBy});
+        const newReceiver = await Receiver.create({...receiver,createdBy});
 
         const newDelivery = await Delivery.create(delivery)
         newDelivery.messenger = messenger._id;
