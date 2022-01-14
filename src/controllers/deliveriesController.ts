@@ -69,12 +69,9 @@ export async function updateDelivery(request:Request,response:Response) {
 
         if(!delivery) return response.status(400).json({message:"Delivery not found"})
         
-        if(isComplete){
-            const messenger = await Messenger.findById(delivery.messenger)
-            messenger.deliveries = messenger.deliveries.filter((delivery:any) => delivery.toString() !== delivery._id)
-            await messenger.save()
-            delivery.messenger = null;
-        }
+
+           
+        
 
         delivery.isComplete = isComplete
         delivery.description = description

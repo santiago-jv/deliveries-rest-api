@@ -54,6 +54,7 @@ DeliverySchema.pre('deleteOne', async function(next){
     const messenger = await Messenger.findById(delivery.messenger)
     messenger.deliveries = messenger.deliveries.filter((delivery:any) => delivery.toString() !== this._conditions._id)
     await messenger.save()
+    delivery.messenger = null;
     next()
 })
 
