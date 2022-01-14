@@ -47,7 +47,8 @@ exports.getDelivery = getDelivery;
 function createDelivery(request, response) {
     return __awaiter(this, void 0, void 0, function* () {
         const { description, pickUpTime, deliveryTime, petitioner, receiver } = request.body;
-        const delivery = { description, pickUpTime, deliveryTime };
+        const createdBy = request.headers.admin;
+        const delivery = { description, pickUpTime, deliveryTime, createdBy };
         const { messenger: messengerId } = request.query;
         try {
             const messenger = yield Messenger_1.default.findById(messengerId);
@@ -55,8 +56,8 @@ function createDelivery(request, response) {
                 return response.status(400).json({
                     message: "Messenger not found"
                 });
-            const newPetitioner = yield Petitioner_1.default.create(petitioner);
-            const newReceiver = yield Receiver_1.default.create(receiver);
+            const newPetitioner = yield Petitioner_1.default.create(Object.assign(Object.assign({}, petitioner), { createdBy }));
+            const newReceiver = yield Receiver_1.default.create(Object.assign(Object.assign({}, receiver), { createdBy }));
             const newDelivery = yield Delivery_1.default.create(delivery);
             newDelivery.messenger = messenger._id;
             newDelivery.petitioner = newPetitioner._id;

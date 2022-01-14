@@ -43,8 +43,9 @@ exports.getMessenger = getMessenger;
 function createMessenger(request, response) {
     return __awaiter(this, void 0, void 0, function* () {
         const messengerData = request.body;
+        const createdBy = request.headers.admin;
         try {
-            const messenger = yield Messenger_1.default.create(messengerData);
+            const messenger = yield Messenger_1.default.create(Object.assign(Object.assign({}, messengerData), { createdBy }));
             return response.status(201).json(messenger);
         }
         catch (error) {
