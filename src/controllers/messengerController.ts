@@ -24,8 +24,9 @@ export async function getMessenger(request:Request, response:Response){
 }
 export async function createMessenger(request:Request, response:Response) {
     const messengerData = request.body;
+    const createdBy = request.headers.admin
     try {
-        const messenger = await Messenger.create(messengerData);
+        const messenger = await Messenger.create({...messengerData,createdBy});
         return response.status(201).json(messenger)
     } catch (error) {
         return response.status(500).json({error})
