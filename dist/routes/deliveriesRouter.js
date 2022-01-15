@@ -10,4 +10,5 @@ deliveriesRouter.get('/:id', deliveriesController_1.getDelivery);
 deliveriesRouter.post('', deliveriesValidation_1.deliveryValidation, verifyData_1.verifyData, deliveriesController_1.createDelivery);
 deliveriesRouter.put('/:id', deliveriesValidation_1.deliveryValidation, verifyData_1.verifyData, deliveriesController_1.updateDelivery);
 deliveriesRouter.delete('/:id', deliveriesController_1.deleteDelivery);
+deliveriesRouter.patch('/:id', deliveriesController_1.changeIsCompleteOfDelivery);
 exports.default = deliveriesRouter;

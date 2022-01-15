@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteDelivery = exports.updateDelivery = exports.createDelivery = exports.getDelivery = exports.getDeliveries = void 0;
+exports.changeIsCompleteOfDelivery = exports.deleteDelivery = exports.updateDelivery = exports.createDelivery = exports.getDelivery = exports.getDeliveries = void 0;
 const Delivery_1 = __importDefault(require("../models/Delivery"));
 const Messenger_1 = __importDefault(require("../models/Messenger"));
 const Petitioner_1 = __importDefault(require("../models/Petitioner"));
@@ -85,12 +85,6 @@ function updateDelivery(request, response) {
             const delivery = yield Delivery_1.default.findById(id);
             if (!delivery)
                 return response.status(400).json({ message: "Delivery not found" });
-            if (isComplete) {
-                const messenger = yield Messenger_1.default.findById(delivery.messenger);
-                messenger.deliveries = messenger.deliveries.filter((delivery) => delivery.toString() !== delivery._id);
-                yield messenger.save();
-                delivery.messenger = null;
-            }
             delivery.isComplete = isComplete;
             delivery.description = description;
             delivery.pickUpTime = pickUpTime;
@@ -123,3 +117,20 @@ function deleteDelivery(request, response) {
     });
 }
 exports.deleteDelivery = deleteDelivery;
+function changeIsCompleteOfDelivery(request, response) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { isComplete } = request.body;
+        console.log(isComplete);
+        const { id } = request.params;
+        try {
+            yield Delivery_1.default.findOneAndUpdate({ _id: id }, { isComplete });
+            return response.status(200).json({
+                message: "Delivery property has been updated"
+            });
+        }
+        catch (error) {
+            return response.status(500).json({ error });
+        }
+    });
+}
+exports.changeIsCompleteOfDelivery = changeIsCompleteOfDelivery;

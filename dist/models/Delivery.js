@@ -66,6 +66,7 @@ DeliverySchema.pre('deleteOne', function (next) {
         const messenger = yield Messenger_1.default.findById(delivery.messenger);
         messenger.deliveries = messenger.deliveries.filter((delivery) => delivery.toString() !== this._conditions._id);
         yield messenger.save();
+        delivery.messenger = null;
         next();
     });
 });

@@ -101,3 +101,17 @@ export async function deleteDelivery(request:Request,response:Response) {
         return response.status(500).json({error})
     }
 }
+export async function changeIsCompleteOfDelivery(request:Request, response:Response) {
+    const {isComplete} = request.body
+    console.log(isComplete);
+    const {id} = request.params
+    try {
+        await Delivery.findOneAndUpdate({_id:id}, {isComplete})
+        return response.status(200).json({
+            message:"Delivery property has been updated"
+        })
+    } catch (error) {
+        return response.status(500).json({error})
+
+    }
+}
