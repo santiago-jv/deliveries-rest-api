@@ -61,7 +61,7 @@ export async function createDelivery (request:Request,response:Response) {
 
 }
 export async function updateDelivery(request:Request,response:Response) {
-    const { petitioner: petitionerData, receiver: receiverData,id, isComplete,description, pickUpTime,deliveryTime} = request.body
+    const { petitioner: petitionerData, receiver: receiverData,id, isComplete,description, pickUpTime,deliveryTime,messenger} = request.body
     
 
     try {
@@ -77,6 +77,7 @@ export async function updateDelivery(request:Request,response:Response) {
         delivery.description = description
         delivery.pickUpTime = pickUpTime
         delivery.deliveryTime = deliveryTime
+        delivery.messenger = messenger
         await delivery.save()
 
         await Petitioner.findByIdAndUpdate(delivery.petitioner,petitionerData)

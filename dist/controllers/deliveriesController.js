@@ -80,7 +80,7 @@ function createDelivery(request, response) {
 exports.createDelivery = createDelivery;
 function updateDelivery(request, response) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { petitioner: petitionerData, receiver: receiverData, id, isComplete, description, pickUpTime, deliveryTime } = request.body;
+        const { petitioner: petitionerData, receiver: receiverData, id, isComplete, description, pickUpTime, deliveryTime, messenger } = request.body;
         try {
             const delivery = yield Delivery_1.default.findById(id);
             if (!delivery)
@@ -89,6 +89,7 @@ function updateDelivery(request, response) {
             delivery.description = description;
             delivery.pickUpTime = pickUpTime;
             delivery.deliveryTime = deliveryTime;
+            delivery.messenger = messenger;
             yield delivery.save();
             yield Petitioner_1.default.findByIdAndUpdate(delivery.petitioner, petitionerData);
             yield Receiver_1.default.findByIdAndUpdate(delivery.receiver, receiverData);
