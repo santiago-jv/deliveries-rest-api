@@ -1,8 +1,12 @@
 import bcrypt from 'bcrypt'
 import { NextFunction, Request, Response } from "express";
 import Admin from "../models/Admin";
-import jwt from "jsonwebtoken"
-
+import jwt, { JwtPayload } from "jsonwebtoken"
+declare module "jsonwebtoken" {
+    export interface JwtPayload {
+        id: string;
+    }
+}
 export async function loginAdmin (request:Request,response:Response, next: NextFunction) {
     const {email,password} = request.body
 
@@ -61,3 +65,18 @@ export async function registerAdmin (request:Request,response:Response, next: Ne
     }
 }
 
+export async function refreshToken(request:Request, response:Response) {
+
+    try {
+        const {token} = request.body;
+        const payload:JwtPayload = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
+        const admin = await Admin.findById(payload.id);
+        const newToken =  jwt.sign({id:admin._id}, process.env.JWT_SECRET!);
+        return response.status(200).json({
+            token:newToken,
+            admin
+        })
+    } catch (error) {
+        return response.status(400).json({error})
+    }
+}

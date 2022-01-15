@@ -7,4 +7,5 @@ const verifyData_1 = require("../middlewares/verifyData");
 const authRouter = (0, express_1.Router)();
 authRouter.post('/login', authValidations_1.loginValidations, verifyData_1.verifyData, authController_1.loginAdmin);
 authRouter.post('/register', authValidations_1.registerValidations, verifyData_1.verifyData, authController_1.registerAdmin);
+authRouter.post('/refresh-token', authController_1.refreshToken);
 exports.default = authRouter;
